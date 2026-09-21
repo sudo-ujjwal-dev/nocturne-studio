@@ -1,0 +1,125 @@
+// Nocturne Studio — Prisma schema (MySQL)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  SELLER
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(120)
+  email        String   @unique @db.VarChar(190)
+  password     String   @db.VarChar(191) // bcrypt hash, never returned by the API
+  role         Role     @default(CUSTOMER)
+  businessName String?  @db.VarChar(160) // set when role = SELLER
+  avatar       String?  @db.VarChar(500) // uploaded or pasted image, shown wherever this user is attributed
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orders   Order[]
+  products Product[] // products this user sells, only populated for SELLER accounts
+  reviews  Review[]
+
+  @@map("users")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique @db.VarChar(160)
+  name        String   @db.VarChar(160)
+  description String   @db.Text
+  price       Decimal  @db.Decimal(10, 2)
+  image       String   @db.VarChar(500)
+  gallery     String?  @db.Text // JSON-encoded array of extra image URLs
+  category    String   @db.VarChar(60)
+  specs       String?  @db.Text // JSON-encoded key/value spec sheet
+  stock       Int      @default(0)
+  rating      Decimal  @default(0) @db.Decimal(2, 1) // kept in sync with the average of `reviews` whenever one changes
+  featured    Boolean  @default(false)
+  isNew       Boolean  @default(false)
+  isActive    Boolean  @default(true) // sellers deactivate instead of deleting once a product has orders
+  sellerId    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  seller     User        @relation(fields: [sellerId], references: [id])
+  orderItems OrderItem[]
+  reviews    Review[]
+
+  @@index([category])
+  @@index([sellerId])
+  @@map("products")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  userId    Int
+  rating    Int      @db.TinyInt // 1-5, enforced in the validator
+  comment   String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // One review per person per product — submitting again edits it rather
+  // than piling up duplicates, same pattern as most real storefronts.
+  @@unique([productId, userId])
+  @@index([productId])
+  @@map("reviews")
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
+
+model Order {
+  id               Int         @id @default(autoincrement())
+  userId           Int
+  subtotal         Decimal     @db.Decimal(10, 2)
+  shipping         Decimal     @db.Decimal(10, 2)
+  total            Decimal     @db.Decimal(10, 2)
+  status           OrderStatus @default(PENDING)
+  customerName     String      @db.VarChar(120)
+  customerEmail    String      @db.VarChar(190)
+  customerPhone    String      @db.VarChar(40)
+  shippingAddress  String      @db.VarChar(255)
+  city             String      @db.VarChar(120)
+  postalCode       String      @db.VarChar(20)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  user  User        @relation(fields: [userId], references: [id])
+  items OrderItem[]
+
+  @@index([userId])
+  @@map("orders")
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2) // unit price at time of purchase
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_items")
+}

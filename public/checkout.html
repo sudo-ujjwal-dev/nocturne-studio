@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Nocturne Studio</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-row">
+      <a href="index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M21 6a10.5 10.5 0 1 0 5.6 19.4A8.5 8.5 0 0 1 21 6Z" stroke-width="1.4"/>
+        </svg>
+        Nocturne Studio
+      </a>
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="shop.html">Shop</a>
+      </nav>
+      <div class="header-actions">
+        <a href="login.html" class="icon-btn" data-account-link aria-label="Account">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6.6" r="3.2" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 17c1.2-3.4 3.9-5 6.5-5s5.3 1.6 6.5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap shop-head">
+      <h1>Checkout</h1>
+      <p class="text-muted" style="margin-top:10px;">Secure demo checkout — no real payment is processed.</p>
+    </div>
+
+    <div id="checkout-root" class="wrap checkout-layout">
+      <div>
+        <form id="checkout-form" novalidate>
+          <div class="form-banner"></div>
+
+          <div class="checkout-section">
+            <h2>Contact & shipping</h2>
+            <div class="field" data-field="customerName">
+              <label for="customerName">Full name</label>
+              <input type="text" id="customerName" name="customerName" required autocomplete="name">
+              <span class="field-error"></span>
+            </div>
+            <div class="field-row">
+              <div class="field" data-field="customerEmail">
+                <label for="customerEmail">Email</label>
+                <input type="email" id="customerEmail" name="customerEmail" required autocomplete="email">
+                <span class="field-error"></span>
+              </div>
+              <div class="field" data-field="customerPhone">
+                <label for="customerPhone">Phone</label>
+                <input type="tel" id="customerPhone" name="customerPhone" required autocomplete="tel">
+                <span class="field-error"></span>
+              </div>
+            </div>
+            <div class="field" data-field="shippingAddress">
+              <label for="shippingAddress">Address</label>
+              <input type="text" id="shippingAddress" name="shippingAddress" required autocomplete="street-address">
+              <span class="field-error"></span>
+            </div>
+            <div class="field-row">
+              <div class="field" data-field="city">
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" required autocomplete="address-level2">
+                <span class="field-error"></span>
+              </div>
+              <div class="field" data-field="postalCode">
+                <label for="postalCode">Postal code</label>
+                <input type="text" id="postalCode" name="postalCode" required autocomplete="postal-code">
+                <span class="field-error"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-section">
+            <h2>Payment</h2>
+            <div class="field-row">
+              <div class="field">
+                <label for="cardNumber">Card number</label>
+                <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" inputmode="numeric" autocomplete="off">
+              </div>
+              <div class="field">
+                <label for="cardExpiry">Expiry</label>
+                <input type="text" id="cardExpiry" placeholder="MM / YY" autocomplete="off">
+              </div>
+            </div>
+            <p class="text-muted" style="font-size:.82rem;margin-top:-8px;">
+              This is a demo store — payment fields are not sent anywhere. Your order is created and tracked for real once you place it.
+            </p>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Place order</button>
+        </form>
+      </div>
+
+      <div>
+        <div class="checkout-section">
+          <h2>Order</h2>
+          <div id="checkout-order-lines"></div>
+        </div>
+        <aside class="summary-card" id="checkout-summary"></aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-bottom">
+        <span>© 2026 Nocturne Studio. A CodeAlpha internship project.</span>
+        <span>Made for the quiet hours.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

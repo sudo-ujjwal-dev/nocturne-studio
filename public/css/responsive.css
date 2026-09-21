@@ -1,0 +1,82 @@
+/* ============================================================
+   NOCTURNE STUDIO — responsive.css
+   Cross-cutting refinements layered on top of the breakpoints
+   already declared alongside each component/page.
+   ============================================================ */
+
+@media (max-width: 980px) {
+  .header-row {
+    padding-block: 14px;
+  }
+
+  .hero {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  .hero-meta {
+    gap: 22px;
+  }
+
+  .hero-cta-row .btn {
+    flex: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 20px;
+  }
+
+  section {
+    padding-block: 56px;
+  }
+
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .hero-meta {
+    flex-wrap: wrap;
+    row-gap: 18px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+  }
+
+  .cart-line {
+    grid-template-columns: 56px 1fr;
+  }
+
+  .cart-line-price {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+  }
+
+  /* Comfortable touch targets on small screens */
+  .btn,
+  .icon-btn,
+  .qty-control button {
+    min-height: 40px;
+  }
+}
+
+@media (hover: none) {
+  .product-card-quickadd {
+    opacity: 1;
+    transform: translateY(0);
+    position: static;
+    margin-top: 6px;
+  }
+}
